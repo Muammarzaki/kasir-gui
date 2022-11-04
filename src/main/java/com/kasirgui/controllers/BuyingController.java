@@ -43,7 +43,7 @@ public class BuyingController implements Initializable {
     private TableView<ListProduct> listTable;
 
     @FXML
-    private TableView<?> listTableSold;
+    private TableView<ListProduct> listTableSold;
 
     @FXML
     private TableColumn<TableBuy, Integer> priceOfOne;
@@ -65,17 +65,18 @@ public class BuyingController implements Initializable {
 
     @FXML
     private TextField totalBuy;
+
     @FXML
     private TableColumn<TableBuy, Integer> totalPrice;
 
-    private ObservableList<TableBuy> data = FXCollections.observableArrayList(
+    private ObservableList<TableBuy> buyList = FXCollections.observableArrayList(
             new TableBuy("ayam", 10, 40000, 20000),
             new TableBuy("ayam", 10, 40000, 20000),
             new TableBuy("ayam", 10, 40000, 20000),
             new TableBuy("ayam", 10, 40000, 20000));
 
     private ObservableList<ListProduct> list = FXCollections.observableArrayList(
-            new ListProduct("ikan", 2000, 4));
+            new ListProduct("ikan", 2000, 4), new ListProduct("ikan", 2000, 0), new ListProduct("ikan", 2000, 4));
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -83,6 +84,7 @@ public class BuyingController implements Initializable {
         initListTable();
     }
 
+    // start event
     @FXML
     void cancleClick(MouseEvent event) {
         System.out.println("cancle");
@@ -97,7 +99,6 @@ public class BuyingController implements Initializable {
     void hitungEnter(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             System.out.println("hitung enter");
-            initBuyTable();
             countField.clear();
         }
 
@@ -109,12 +110,18 @@ public class BuyingController implements Initializable {
 
     }
 
+    // end event
+    // initial of view
     private void initListTable() {
         listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         listStock.setCellValueFactory(new PropertyValueFactory<>("Price"));
         listPrice.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
-        // listTableSold.setItems(list);
+        soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        // listTableSold.setItems(FXCollections.observableArrayList(list.stream().filter(x
+        // -> x.getStock() < 0).toList()));
 
         listTable.setItems(list);
     }
@@ -125,7 +132,7 @@ public class BuyingController implements Initializable {
         priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
 
-        buyTable.setItems(data);
+        buyTable.setItems(buyList);
     }
-
+    // end of initial view
 }
