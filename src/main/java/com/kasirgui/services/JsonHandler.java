@@ -9,12 +9,12 @@ public interface JsonHandler<T> {
      * 
      * @param data
      */
-    void write(T[] data);
+    void write(T[] data) throws Exception;
 
     /**
      * read json file to pojo
      * 
      * @return
      */
-    T read();
+    T read() throws Exception;
 }

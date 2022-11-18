@@ -2,6 +2,7 @@
 package com.kasirgui.controllers;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.kasirgui.model.ListProduct;
@@ -104,6 +105,17 @@ public class BuyingController implements Initializable {
 
     }
 
+    public Boolean issame(Map<String, Double> map, String key) {
+        if (map.containsKey(key)) {
+            // TODO must fixing when key is data form file
+            map.put(key, map.get(key));
+            return true;
+        } else {
+            map.put(key, null);
+            return false;
+        }
+    }
+
     @FXML
     void submitClick(MouseEvent event) {
         System.out.println("submit");
@@ -119,9 +131,6 @@ public class BuyingController implements Initializable {
 
         soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
         soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-
-        // listTableSold.setItems(FXCollections.observableArrayList(list.stream().filter(x
-        // -> x.getStock() < 0).toList()));
 
         listTable.setItems(list);
     }
