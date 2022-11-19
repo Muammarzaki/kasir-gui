@@ -1,15 +1,15 @@
 package com.kasirgui.model;
 
-public class TableBuy {
+public class BuyFormat {
     private String name;
     private Integer jumlah;
     private Integer unitPrice;
     private Integer totalPrice;
 
-    public TableBuy() {
+    public BuyFormat() {
     }
 
-    public TableBuy(String name, Integer jumlah, Integer unitPrice, Integer totalPrice) {
+    public BuyFormat(String name, Integer jumlah, Integer unitPrice, Integer totalPrice) {
         this.name = name;
         this.jumlah = jumlah;
         this.unitPrice = unitPrice;

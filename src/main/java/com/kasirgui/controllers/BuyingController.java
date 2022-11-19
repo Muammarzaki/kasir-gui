@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.kasirgui.model.ListProduct;
-import com.kasirgui.model.TableBuy;
+import com.kasirgui.model.BuyFormat;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,13 +23,13 @@ import javafx.scene.input.MouseEvent;
 
 public class BuyingController implements Initializable {
     @FXML
-    private TableView<TableBuy> buyTable;
+    private TableView<BuyFormat> buyTable;
 
     @FXML
     private Button cancle;
 
     @FXML
-    private TableColumn<TableBuy, Integer> count;
+    private TableColumn<BuyFormat, Integer> count;
 
     @FXML
     private TableColumn<ListProduct, Integer> listName;
@@ -47,13 +47,13 @@ public class BuyingController implements Initializable {
     private TableView<ListProduct> listTableSold;
 
     @FXML
-    private TableColumn<TableBuy, Integer> priceOfOne;
+    private TableColumn<BuyFormat, Integer> priceOfOne;
 
     @FXML
     private TextField countField;
 
     @FXML
-    private TableColumn<TableBuy, String> product;
+    private TableColumn<BuyFormat, String> product;
 
     @FXML
     private TableColumn<?, ?> soldProduct;
@@ -68,13 +68,13 @@ public class BuyingController implements Initializable {
     private TextField totalBuy;
 
     @FXML
-    private TableColumn<TableBuy, Integer> totalPrice;
+    private TableColumn<BuyFormat, Integer> totalPrice;
 
-    private ObservableList<TableBuy> buyList = FXCollections.observableArrayList(
-            new TableBuy("ayam", 10, 40000, 20000),
-            new TableBuy("ayam", 10, 40000, 20000),
-            new TableBuy("ayam", 10, 40000, 20000),
-            new TableBuy("ayam", 10, 40000, 20000));
+    private ObservableList<BuyFormat> buyList = FXCollections.observableArrayList(
+            new BuyFormat("ayam", 10, 40000, 20000),
+            new BuyFormat("ayam", 10, 40000, 20000),
+            new BuyFormat("ayam", 10, 40000, 20000),
+            new BuyFormat("ayam", 10, 40000, 20000));
 
     private ObservableList<ListProduct> list = FXCollections.observableArrayList(
             new ListProduct("ikan", 2000, 4), new ListProduct("ikan", 2000, 0), new ListProduct("ikan", 2000, 4));

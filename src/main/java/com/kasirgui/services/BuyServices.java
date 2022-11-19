@@ -19,7 +19,7 @@ public interface BuyServices extends Callable<Double> {
      * melakukan counter harga dan jumlah barang serta mengurangi jumlah barang di
      * dalam data
      */
-    void counter();
+    void counter(String name, Integer count);
 
     /**
      * get data dari table / json file dgn mengakses json data handler
