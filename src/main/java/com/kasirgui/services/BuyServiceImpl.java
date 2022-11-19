@@ -20,7 +20,7 @@ public class BuyServiceImpl implements BuyServices {
 
     @Override
     public void counter(String nameProduct, Integer jumlah) {
-        this.barang.stream().map((x) -> {
+        this.barang.stream().map(x -> {
             if (x.getName().equals(nameProduct)) {
                 x.setJumlah(x.getJumlah() + jumlah);
             }
@@ -29,7 +29,7 @@ public class BuyServiceImpl implements BuyServices {
     }
 
     public Boolean isProductCorrect() {
-        // check is is product correct 
+        // check is is product correct
         return false;
     }
 }
