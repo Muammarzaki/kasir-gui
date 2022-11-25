@@ -1,9 +1,12 @@
 package com.kasirgui.services;
 
+import com.kasirgui.model.FormatSaver;
+
 /**
  * JsonHandler
  */
 public interface JsonHandler<T> {
+
     /**
      * write data to json file
      * 
@@ -16,5 +19,5 @@ public interface JsonHandler<T> {
      * 
      * @return
      */
-    T read() throws Exception;
+    FormatSaver[] read() throws Exception;
 }

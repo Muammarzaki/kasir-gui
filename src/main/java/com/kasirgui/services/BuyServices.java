@@ -1,19 +1,17 @@
 package com.kasirgui.services;
 
-import java.util.concurrent.Callable;
-
 import com.kasirgui.helpers.JsonHandlerSingelton;
 import com.kasirgui.model.FormatSaver;
 
 /**
  * BuyServices
  */
-public interface BuyServices extends Callable<Double> {
+public interface BuyServices {
 
     /**
      * hitung total harga perbarang
      */
-    Double count();
+    void count(String name, Integer count);
 
     /**
      * melakukan counter harga dan jumlah barang serta mengurangi jumlah barang di

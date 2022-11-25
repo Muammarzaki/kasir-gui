@@ -1,6 +1,7 @@
 package com.kasirgui.services;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -22,8 +23,14 @@ public class JsonHandlerImpl implements JsonHandler<FormatSaver> {
     private ObjectReader reader = mapper.reader();
     private Path fileSave = Paths.get(config.getProperty("root"), config.getProperty("fileSave"));
 
+    public final void init() throws IOException {
+        if (!Files.exists(fileSave)) {
+            Files.createFile(fileSave);
+        }
+    }
+
     @Override
-    public FormatSaver read() throws IOException {
+    public FormatSaver[] read() throws IOException {
         return reader.readValue(fileSave.toFile());
     }
 
