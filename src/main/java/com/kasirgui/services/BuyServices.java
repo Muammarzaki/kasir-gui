@@ -10,8 +10,9 @@ public interface BuyServices {
 
     /**
      * hitung total harga perbarang
+     * @throws Exception
      */
-    void count(String name, Integer count);
+    void count(String name, Integer count) throws Exception;
 
     /**
      * melakukan counter harga dan jumlah barang serta mengurangi jumlah barang di

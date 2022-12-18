@@ -2,10 +2,13 @@
 package com.kasirgui.controllers;
 
 import java.net.URL;
-import java.util.Map;
+// import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.kasirgui.model.ListProduct;
+import com.kasirgui.services.BuyServiceImpl;
+import com.kasirgui.services.BuyServices;
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.kasirgui.model.BuyFormat;
 
 import javafx.collections.FXCollections;
@@ -22,6 +25,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class BuyingController implements Initializable {
+    private BuyServices service = new BuyServiceImpl();
+
     @FXML
     private TableView<BuyFormat> buyTable;
 
@@ -85,7 +90,6 @@ public class BuyingController implements Initializable {
         initListTable();
     }
 
-    // start event
     @FXML
     void cancleClick(MouseEvent event) {
         System.out.println("cancle");
@@ -93,28 +97,55 @@ public class BuyingController implements Initializable {
 
     @FXML
     void hitungClick(MouseEvent event) {
-        System.out.println("hitung click");
+        try {
+            System.out.println("hitung click");
+            String[] text = countField.getText().split(" ");
+            if (text.length == 2) {
+                service.count(text[0], Integer.parseInt(text[1]));
+            } else {
+                service.count(text[0], 1);
+            }
+        } catch (InvalidDefinitionException e) {
+            System.err.println("product no found");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
+    /*
+     * hitung dengan enter
+     */
     @FXML
     void hitungEnter(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            System.out.println("hitung enter");
+        try {
+            if (event.getCode() == KeyCode.ENTER) {
+                System.out.println("hitung enter");
+                String[] text = countField.getText().split(" ");
+                if (text.length == 2) {
+                    service.count(text[0], Integer.parseInt(text[1]));
+                } else {
+                    service.count(text[0], 1);
+                }
+                countField.clear();
+            }
+        } catch (InvalidDefinitionException e) {
+            System.err.println("product no found");
+        } catch (Exception e) {
             countField.clear();
-        }
-
-    }
-
-    public Boolean issame(Map<String, Double> map, String key) {
-        if (map.containsKey(key)) {
-            // TODO must fixing when key is data form file
-            map.put(key, map.get(key));
-            return true;
-        } else {
-            map.put(key, null);
-            return false;
+            System.err.println(e);
         }
     }
+
+    // public Boolean issame(Map<String, Double> map, String key) {
+    // if (map.containsKey(key)) {
+    // // must fixing when key is data form file
+    // map.put(key, map.get(key));
+    // return true;
+    // } else {
+    // map.put(key, null);
+    // return false;
+    // }
+    // }
 
     @FXML
     void submitClick(MouseEvent event) {
