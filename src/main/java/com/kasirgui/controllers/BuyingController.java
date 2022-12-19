@@ -5,13 +5,12 @@ import java.net.URL;
 // import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.ListProduct;
 import com.kasirgui.services.BuyServiceImpl;
 import com.kasirgui.services.BuyServices;
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import com.kasirgui.model.BuyFormat;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -75,19 +74,35 @@ public class BuyingController implements Initializable {
     @FXML
     private TableColumn<BuyFormat, Integer> totalPrice;
 
-    private ObservableList<BuyFormat> buyList = FXCollections.observableArrayList(
-            new BuyFormat("ayam", 10, 40000, 20000),
-            new BuyFormat("ayam", 10, 40000, 20000),
-            new BuyFormat("ayam", 10, 40000, 20000),
-            new BuyFormat("ayam", 10, 40000, 20000));
+    // private ObservableList<BuyFormat> buyList =
+    // FXCollections.observableArrayList(
+    // new BuyFormat("ayam", 10, 40000, 20000),
+    // new BuyFormat("ayam", 10, 40000, 20000),
+    // new BuyFormat("ayam", 10, 40000, 20000),
+    // new BuyFormat("ayam", 10, 40000, 20000));
 
-    private ObservableList<ListProduct> list = FXCollections.observableArrayList(
-            new ListProduct("ikan", 2000, 4), new ListProduct("ikan", 2000, 0), new ListProduct("ikan", 2000, 4));
+    // private ObservableList<ListProduct> list = FXCollections.observableArrayList(
+    // new ListProduct("ikan", 2000, 4), new ListProduct("ikan", 2000, 0), new
+    // ListProduct("ikan", 2000, 4));
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        initBuyTable();
-        initListTable();
+
+        product.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        count.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
+        priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
+        totalPrice.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
+
+        buyTable.getItems();
+
+        listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        listStock.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        listPrice.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+
+        listTable.getItems();
     }
 
     @FXML
@@ -105,6 +120,10 @@ public class BuyingController implements Initializable {
             } else {
                 service.count(text[0], 1);
             }
+            ObservableList<BuyFormat> items = buyTable.getItems();
+            items.clear();
+            items.addAll(service.getBarang());
+            buyTable.setItems(items);
         } catch (InvalidDefinitionException e) {
             System.err.println("product no found");
         } catch (Exception e) {
@@ -126,10 +145,16 @@ public class BuyingController implements Initializable {
                 } else {
                     service.count(text[0], 1);
                 }
+
+                ObservableList<BuyFormat> items = buyTable.getItems();
+                items.clear();
+                items.addAll(service.getBarang());
+                buyTable.setItems(items);
                 countField.clear();
             }
         } catch (InvalidDefinitionException e) {
             System.err.println("product no found");
+            countField.clear();
         } catch (Exception e) {
             countField.clear();
             System.err.println(e);
@@ -153,26 +178,4 @@ public class BuyingController implements Initializable {
 
     }
 
-    // end event
-    // initial of view
-    private void initListTable() {
-        listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        listStock.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        listPrice.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-
-        soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-
-        listTable.setItems(list);
-    }
-
-    private void initBuyTable() {
-        product.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        count.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
-        priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
-        totalPrice.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
-
-        buyTable.setItems(buyList);
-    }
-    // end of initial view
 }

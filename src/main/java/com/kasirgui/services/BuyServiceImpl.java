@@ -11,7 +11,7 @@ import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.FormatSaver;
 
 public class BuyServiceImpl implements BuyServices {
-    private List<BuyFormat> barang = new ArrayList<>();
+    public List<BuyFormat> barang = new ArrayList<>();
     private final JsonHandler<FormatSaver> json = JsonHandlerSingelton.getInstance();
 
     /*
@@ -56,5 +56,10 @@ public class BuyServiceImpl implements BuyServices {
     public Boolean isProductCorrect() {
         // check is is product correct
         return false;
+    }
+
+    @Override
+    public List<BuyFormat> getBarang() {
+        return this.barang;
     }
 }

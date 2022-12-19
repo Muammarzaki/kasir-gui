@@ -1,6 +1,9 @@
 package com.kasirgui.services;
 
+import java.util.List;
+
 import com.kasirgui.helpers.JsonHandlerSingelton;
+import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.FormatSaver;
 
 /**
@@ -10,6 +13,7 @@ public interface BuyServices {
 
     /**
      * hitung total harga perbarang
+     * 
      * @throws Exception
      */
     void count(String name, Integer count) throws Exception;
@@ -28,4 +32,6 @@ public interface BuyServices {
     default JsonHandler<FormatSaver> getData() {
         return JsonHandlerSingelton.getInstance();
     }
+
+    List<BuyFormat> getBarang();
 }
