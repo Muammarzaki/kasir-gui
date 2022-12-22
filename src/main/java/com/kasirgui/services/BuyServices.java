@@ -2,7 +2,7 @@ package com.kasirgui.services;
 
 import java.util.List;
 
-import com.kasirgui.helpers.JsonHandlerSingelton;
+import com.kasirgui.helpers.ProductSaver;
 import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.FormatSaver;
 
@@ -16,22 +16,23 @@ public interface BuyServices {
      * 
      * @throws Exception
      */
-    void count(String name, Integer count) throws Exception;
+    void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount) throws Exception;
 
     /**
-     * melakukan counter harga dan jumlah barang serta mengurangi jumlah barang di
-     * dalam data
+     * mendapatkan total dari seluruh harga
+     * 
+     * @param dataProduct
+     * @throws Exception
      */
-    void counter(String name, Integer count);
+    Double getTotal(List<BuyFormat> dataProduct) throws Exception;
 
     /**
      * get data dari table / json file dgn mengakses json data handler
      * 
      * @return JsonHandler<formatSaver>
+     * @throws Exception
      */
-    default JsonHandler<FormatSaver> getData() {
-        return JsonHandlerSingelton.getInstance();
+    static List<FormatSaver> getData() throws Exception {
+        return ProductSaver.getInstance().read();
     }
-
-    List<BuyFormat> getBarang();
 }

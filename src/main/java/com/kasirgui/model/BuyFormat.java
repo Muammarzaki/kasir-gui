@@ -3,13 +3,13 @@ package com.kasirgui.model;
 public class BuyFormat {
     private String name;
     private Integer jumlah;
-    private Integer unitPrice;
-    private Integer totalPrice;
+    private Double unitPrice;
+    private Double totalPrice;
 
     public BuyFormat() {
     }
 
-    public BuyFormat(String name, Integer jumlah, Integer unitPrice, Integer totalPrice) {
+    public BuyFormat(String name, Integer jumlah, Double unitPrice, Double totalPrice) {
         this.name = name;
         this.jumlah = jumlah;
         this.unitPrice = unitPrice;
@@ -20,32 +20,36 @@ public class BuyFormat {
         return name;
     }
 
-    public void setName(String name) {
+    public BuyFormat setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Integer getJumlah() {
         return jumlah;
     }
 
-    public void setJumlah(Integer jumlah) {
+    public BuyFormat setJumlah(Integer jumlah) {
         this.jumlah = jumlah;
+        return this;
     }
 
-    public Integer getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Integer unitPrice) {
-        this.unitPrice = unitPrice;
+    public BuyFormat setUnitPrice(Double double1) {
+        this.unitPrice = double1;
+        return this;
     }
 
-    public Integer getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
+    public BuyFormat setTotalPrice(double d) {
+        this.totalPrice = d;
+        return this;
     }
 
 }

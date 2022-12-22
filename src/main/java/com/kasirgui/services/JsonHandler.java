@@ -1,6 +1,6 @@
 package com.kasirgui.services;
 
-import com.kasirgui.model.FormatSaver;
+import java.util.List;
 
 /**
  * JsonHandler
@@ -12,12 +12,12 @@ public interface JsonHandler<T> {
      * 
      * @param data
      */
-    void write(T[] data) throws Exception;
+    void write(List<T> data) throws Exception;
 
     /**
      * read json file to pojo
      * 
      * @return
      */
-    FormatSaver[] read() throws Exception;
+    List<T> read() throws Exception;
 }

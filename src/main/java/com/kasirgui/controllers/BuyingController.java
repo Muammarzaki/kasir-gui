@@ -2,16 +2,20 @@
 package com.kasirgui.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 // import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.ListProduct;
+import com.kasirgui.model.FormatSaver;
+import com.kasirgui.model.SimpleProductFormat;
 import com.kasirgui.services.BuyServiceImpl;
 import com.kasirgui.services.BuyServices;
 
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,7 +28,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class BuyingController implements Initializable {
-    private BuyServices service = new BuyServiceImpl();
+    private BuyServices buyService;
+
+    private List<BuyFormat> productBuying = new ArrayList<>();
+
+    private List<SimpleProductFormat> listSimpleProduct = new ArrayList<>();
 
     @FXML
     private TableView<BuyFormat> buyTable;
@@ -36,19 +44,19 @@ public class BuyingController implements Initializable {
     private TableColumn<BuyFormat, Integer> count;
 
     @FXML
-    private TableColumn<ListProduct, Integer> listName;
+    private TableColumn<SimpleProductFormat, Integer> listName;
 
     @FXML
-    private TableColumn<ListProduct, Integer> listPrice;
+    private TableColumn<SimpleProductFormat, Integer> listPrice;
 
     @FXML
-    private TableColumn<ListProduct, Integer> listStock;
+    private TableColumn<SimpleProductFormat, Integer> listStock;
 
     @FXML
-    private TableView<ListProduct> listTable;
+    private TableView<SimpleProductFormat> listTable;
 
     @FXML
-    private TableView<ListProduct> listTableSold;
+    private TableView<SimpleProductFormat> listTableSold;
 
     @FXML
     private TableColumn<BuyFormat, Integer> priceOfOne;
@@ -74,26 +82,23 @@ public class BuyingController implements Initializable {
     @FXML
     private TableColumn<BuyFormat, Integer> totalPrice;
 
-    // private ObservableList<BuyFormat> buyList =
-    // FXCollections.observableArrayList(
-    // new BuyFormat("ayam", 10, 40000, 20000),
-    // new BuyFormat("ayam", 10, 40000, 20000),
-    // new BuyFormat("ayam", 10, 40000, 20000),
-    // new BuyFormat("ayam", 10, 40000, 20000));
-
-    // private ObservableList<ListProduct> list = FXCollections.observableArrayList(
-    // new ListProduct("ikan", 2000, 4), new ListProduct("ikan", 2000, 0), new
-    // ListProduct("ikan", 2000, 4));
-
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        try {
+            List<FormatSaver> data = List.of(new FormatSaver("ikan", 3000d, 3d),
+                    new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d));
+
+            buyService = new BuyServiceImpl(data);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         product.setCellValueFactory(new PropertyValueFactory<>("Name"));
         count.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
         priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
 
-        buyTable.getItems();
+        buyTable.setItems(FXCollections.observableList(productBuying));
 
         listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         listStock.setCellValueFactory(new PropertyValueFactory<>("Price"));
@@ -101,8 +106,11 @@ public class BuyingController implements Initializable {
 
         soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
         soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+        listTableSold.setItems(
+                FXCollections.observableList(
+                        listSimpleProduct.stream().filter(x -> x.getStock() == 0).collect(Collectors.toList())));
+        listTable.setItems(FXCollections.observableList(listSimpleProduct));
 
-        listTable.getItems();
     }
 
     @FXML
@@ -114,17 +122,17 @@ public class BuyingController implements Initializable {
     void hitungClick(MouseEvent event) {
         try {
             System.out.println("hitung click");
-            String[] text = countField.getText().split(" ");
+            String[] text = countField.getText().trim().split(" ");
             if (text.length == 2) {
-                service.count(text[0], Integer.parseInt(text[1]));
+                buyService.countAndCounter(productBuying, text[0], Integer.parseInt(text[1]));
             } else {
-                service.count(text[0], 1);
+                buyService.countAndCounter(productBuying, text[0], 1);
             }
-            ObservableList<BuyFormat> items = buyTable.getItems();
-            items.clear();
-            items.addAll(service.getBarang());
-            buyTable.setItems(items);
-        } catch (InvalidDefinitionException e) {
+            countField.clear();
+            buyTable.refresh();
+        } catch (
+
+        InvalidDefinitionException e) {
             System.err.println("product no found");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -139,43 +147,29 @@ public class BuyingController implements Initializable {
         try {
             if (event.getCode() == KeyCode.ENTER) {
                 System.out.println("hitung enter");
-                String[] text = countField.getText().split(" ");
+                String[] text = countField.getText().trim().split(" ");
                 if (text.length == 2) {
-                    service.count(text[0], Integer.parseInt(text[1]));
+                    buyService.countAndCounter(productBuying, text[0], Integer.parseInt(text[1]));
                 } else {
-                    service.count(text[0], 1);
+                    buyService.countAndCounter(productBuying, text[0], 1);
                 }
-
-                ObservableList<BuyFormat> items = buyTable.getItems();
-                items.clear();
-                items.addAll(service.getBarang());
-                buyTable.setItems(items);
+                System.out.println(productBuying.size());
                 countField.clear();
+                buyTable.refresh();
             }
+
         } catch (InvalidDefinitionException e) {
             System.err.println("product no found");
             countField.clear();
         } catch (Exception e) {
             countField.clear();
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
     }
-
-    // public Boolean issame(Map<String, Double> map, String key) {
-    // if (map.containsKey(key)) {
-    // // must fixing when key is data form file
-    // map.put(key, map.get(key));
-    // return true;
-    // } else {
-    // map.put(key, null);
-    // return false;
-    // }
-    // }
 
     @FXML
     void submitClick(MouseEvent event) {
         System.out.println("submit");
-
     }
 
 }

@@ -1,49 +1,44 @@
 package com.kasirgui.services;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kasirgui.helpers.ObjectMapperSingleton;
 import com.kasirgui.helpers.PropertiesConfig;
-import com.kasirgui.model.FormatSaver;
 
-public class JsonHandlerImpl implements JsonHandler<FormatSaver> {
+public class JsonHandlerImpl<T> implements JsonHandler<T> {
 
     Properties config = PropertiesConfig.getConfig("config");
     private ObjectMapper mapper = ObjectMapperSingleton.getInstace();
-    private ObjectWriter write = mapper.writer();
-    private ObjectReader reader = mapper.reader();
     private Path fileSave = Paths.get(config.getProperty("root")).resolve(config.getProperty("fileSave"));
 
-    public final void init() throws IOException {
-        if (Files.notExists(fileSave)) {
+    public final void init() throws Exception {
+        if (!Files.exists(fileSave)) {
             System.out.println(fileSave.toAbsolutePath());
             Files.createDirectory(fileSave.getParent());
             Files.createFile(fileSave);
-
-            write.writeValue(fileSave.toFile(), new ArrayList<>());
+            write(Collections.emptyList());
         }
     }
 
     @Override
-    public FormatSaver[] read() throws IOException {
+    public void write(List<T> data) throws Exception {
         init();
-        return reader.readValue(fileSave.toFile());
+        mapper.writeValue(fileSave.toFile(), data);
     }
 
     @Override
-    public void write(FormatSaver[] data) throws StreamWriteException, DatabindException, IOException {
+    public List<T> read() throws Exception {
         init();
-        write.writeValue(fileSave.toFile(), data);
+        return mapper.readValue(fileSave.toFile(), new TypeReference<List<T>>() {
+        });
+
     }
 
 }

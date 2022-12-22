@@ -4,18 +4,18 @@ import com.kasirgui.model.FormatSaver;
 import com.kasirgui.services.JsonHandler;
 import com.kasirgui.services.JsonHandlerImpl;
 
-public class JsonHandlerSingelton {
+public class ProductSaver {
     private static JsonHandler<FormatSaver> jsonHandler;
 
     /**
      * 
      */
-    private JsonHandlerSingelton() {
+    private ProductSaver() {
         // just implements singleton
     }
 
     public static JsonHandler<FormatSaver> getInstance() {
-        jsonHandler = jsonHandler == null ? new JsonHandlerImpl() : jsonHandler;
+        jsonHandler = jsonHandler == null ? new JsonHandlerImpl<>() : jsonHandler;
         return jsonHandler;
     }
 }

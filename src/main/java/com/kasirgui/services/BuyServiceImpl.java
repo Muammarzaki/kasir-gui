@@ -1,65 +1,50 @@
 package com.kasirgui.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.kasirgui.helpers.JsonHandlerSingelton;
 import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.FormatSaver;
 
 public class BuyServiceImpl implements BuyServices {
-    public List<BuyFormat> barang = new ArrayList<>();
-    private final JsonHandler<FormatSaver> json = JsonHandlerSingelton.getInstance();
+    public List<FormatSaver> listProduct;
 
-    /*
-     * untuk menghitung harga barang
+    /**
+     * @param listProduct
      */
+    public BuyServiceImpl(List<FormatSaver> listProduct) {
+        this.listProduct = listProduct;
+    }
+
     @Override
-    public void count(String nameProduct, Integer jumlahProduct) throws Exception {
-        if (!this.barang.stream().anyMatch(x -> x.getName().equals(nameProduct))) {
-            Integer price;
-            price = getPrice(nameProduct);
-            if (price == null) {
-                throw new NullPointerException("barang tidak ada");
-            }
-            this.barang.add(new BuyFormat(nameProduct, jumlahProduct, price, jumlahProduct * price));
+    public void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount)
+            throws Exception {
+        Optional<BuyFormat> findFirst = dataProduct.stream().filter(x -> x.getName().equals(productName))
+                .findFirst();
+        if (findFirst.isPresent()) {
+            BuyFormat currentProduct = findFirst.get();
+            currentProduct.setJumlah(currentProduct.getJumlah() + amount)
+                    .setTotalPrice(currentProduct.getJumlah() * currentProduct.getUnitPrice());
         } else {
-            this.counter(nameProduct, jumlahProduct);
+            Optional<FormatSaver> productEntity = listProduct.stream()
+                    .filter(x -> x.getProductName().equals(productName)).findFirst();
+            if (productEntity.isPresent()) {
+                Double price = productEntity.get().getPrice();
+                dataProduct.add(new BuyFormat().setName(productName).setJumlah(amount).setUnitPrice(price)
+                        .setTotalPrice(price * amount));
+            }
         }
     }
 
     @Override
-    public void counter(String nameProduct, Integer jumlah) {
-        Stream<BuyFormat> counter = this.barang.stream().map(x -> {
-            // set jumlah barang baru
-            if (x.getName().equals(nameProduct)) {
-                x.setJumlah(x.getJumlah() + jumlah);
-            }
-            return x;
-        }).map(x -> {
-            // set harga total dari barang tsb
-            x.setTotalPrice(x.getJumlah() * x.getUnitPrice());
-            return x;
-        });
-        this.barang = counter.collect(Collectors.toList());
+    public Double getTotal(List<BuyFormat> dataProduct) throws Exception {
+        Map<String, Double> total = dataProduct.stream()
+                .collect(Collectors.groupingBy(BuyFormat::getName, Collectors.summingDouble(BuyFormat::getTotalPrice)));
+        Double totalPrice = total.values().stream().reduce(0d, Double::sum);
+        System.out.println(totalPrice);
+        return totalPrice;
     }
 
-    private Integer getPrice(String productName) throws Exception {
-        return Arrays.asList(json.read()).stream().filter(x -> x.getProductName().equals(productName))
-                .collect(Collectors.toList()).get(0)
-                .getPrice().intValue();
-    }
-
-    public Boolean isProductCorrect() {
-        // check is is product correct
-        return false;
-    }
-
-    @Override
-    public List<BuyFormat> getBarang() {
-        return this.barang;
-    }
 }

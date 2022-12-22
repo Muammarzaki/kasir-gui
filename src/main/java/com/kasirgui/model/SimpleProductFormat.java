@@ -1,14 +1,14 @@
 package com.kasirgui.model;
 
-public class ListProduct {
+public class SimpleProductFormat {
     private String name;
     private Integer price;
     private Integer stock;
 
-    public ListProduct() {
+    public SimpleProductFormat() {
     }
 
-    public ListProduct(String name, Integer price, Integer stock) {
+    public SimpleProductFormat(String name, Integer price, Integer stock) {
         this.name = name;
         this.price = price;
         this.stock = stock;
