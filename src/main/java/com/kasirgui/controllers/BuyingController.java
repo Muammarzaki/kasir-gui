@@ -71,6 +71,9 @@ public class BuyingController implements Initializable {
     private TableColumn<?, ?> soldProduct;
 
     @FXML
+    private Button totalButton;
+
+    @FXML
     private TableColumn<?, ?> soldstock;
 
     @FXML
@@ -84,25 +87,29 @@ public class BuyingController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        List<FormatSaver> data = List.of(new FormatSaver("ikan", 3000d, 3d),
+                new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d),
+                new FormatSaver("buaya", 7000d, 0d));
         try {
-            List<FormatSaver> data = List.of(new FormatSaver("ikan", 3000d, 3d),
-                    new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d));
 
             buyService = new BuyServiceImpl(data);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        data.forEach(
+                (x) -> listSimpleProduct
+                        .add(new SimpleProductFormat(x.getProductName(), x.getPrice().intValue(),
+                                x.getStock().intValue())));
 
         product.setCellValueFactory(new PropertyValueFactory<>("Name"));
         count.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
         priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
         totalPrice.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
-
         buyTable.setItems(FXCollections.observableList(productBuying));
 
         listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        listStock.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        listPrice.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+        listStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        listPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
         soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
@@ -115,6 +122,9 @@ public class BuyingController implements Initializable {
 
     @FXML
     void cancleClick(MouseEvent event) {
+        productBuying.clear();
+        buyTable.refresh();
+        totalBuy.clear();
         System.out.println("cancle");
     }
 
@@ -153,7 +163,6 @@ public class BuyingController implements Initializable {
                 } else {
                     buyService.countAndCounter(productBuying, text[0], 1);
                 }
-                System.out.println(productBuying.size());
                 countField.clear();
                 buyTable.refresh();
             }
@@ -164,6 +173,16 @@ public class BuyingController implements Initializable {
         } catch (Exception e) {
             countField.clear();
             System.err.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    void totalClickForpay(MouseEvent event) {
+        try {
+            Double total = buyService.getTotal(productBuying);
+            totalBuy.setText(String.format("Rp. %,d", Math.round(total)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

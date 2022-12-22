@@ -43,7 +43,6 @@ public class BuyServiceImpl implements BuyServices {
         Map<String, Double> total = dataProduct.stream()
                 .collect(Collectors.groupingBy(BuyFormat::getName, Collectors.summingDouble(BuyFormat::getTotalPrice)));
         Double totalPrice = total.values().stream().reduce(0d, Double::sum);
-        System.out.println(totalPrice);
         return totalPrice;
     }
 
