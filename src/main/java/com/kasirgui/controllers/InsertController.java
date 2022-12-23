@@ -1,27 +1,16 @@
 package com.kasirgui.controllers;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class InsertController {
+import javafx.fxml.Initializable;
 
-    @FXML
-    private Button cancleButton;
+public class InsertController implements Initializable{
 
-    @FXML
-    private TextField deks;
-
-    @FXML
-    private Button insertButton;
-
-    @FXML
-    private TextField nameProduct;
-
-    @FXML
-    private TextField price;
-
-    @FXML
-    private TextField stock;
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

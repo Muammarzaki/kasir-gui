@@ -1,14 +1,17 @@
 
 package com.kasirgui.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 // import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.kasirgui.App;
 import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.FormatSaver;
 import com.kasirgui.model.SimpleProductFormat;
@@ -17,8 +20,12 @@ import com.kasirgui.services.BuyServices;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -140,6 +147,7 @@ public class BuyingController implements Initializable {
             }
             countField.clear();
             buyTable.refresh();
+            totalSchedule();
         } catch (
 
         InvalidDefinitionException e) {
@@ -165,6 +173,7 @@ public class BuyingController implements Initializable {
                 }
                 countField.clear();
                 buyTable.refresh();
+                totalSchedule();
             }
 
         } catch (InvalidDefinitionException e) {
@@ -179,16 +188,51 @@ public class BuyingController implements Initializable {
     @FXML
     void totalClickForpay(MouseEvent event) {
         try {
-            Double total = buyService.getTotal(productBuying);
-            totalBuy.setText(String.format("Rp. %,d", Math.round(total)));
+            totalSchedule();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    private void totalSchedule() throws Exception {
+        Double total = buyService.getTotal(productBuying);
+        totalBuy.setText(String.format("Rp. %,d", Math.round(total)));
+
+    }
+
     @FXML
     void submitClick(MouseEvent event) {
+        try {
+            popup();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.out.println("submit");
+    }
+
+    public void popup() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("pay-dialog.fxml"));
+        DialogPane popupPane = fxmlLoader.load();
+        PayDialogController buycontrol = fxmlLoader.getController();
+
+        try {
+            buycontrol.total.setText(String.format("Rp. %,d", Math.round(buyService.getTotal(productBuying))));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+
+        dialog.setDialogPane(popupPane);
+        Optional<ButtonType> selected = dialog.showAndWait();
+        // ! fucking dev fixing this motherfucker
+        if (selected.get() == ButtonType.FINISH) {
+            System.out.print("oke");
+        } else {
+            // todo fixing this please
+        }
+
     }
 
 }
