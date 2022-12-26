@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.kasirgui.helpers.ProductSaver;
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.FormatSaver;
+import com.kasirgui.model.SimpleProductSaverFormat;
 
 /**
  * BuyServices
@@ -32,7 +32,7 @@ public interface BuyServices {
      * @return JsonHandler<formatSaver>
      * @throws Exception
      */
-    static List<FormatSaver> getData() throws Exception {
+    static List<SimpleProductSaverFormat> getData() throws Exception {
         return ProductSaver.getInstance().read();
     }
 }

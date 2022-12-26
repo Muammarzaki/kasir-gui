@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="337.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kasirgui.controllers.DataInsertDialogController">
+   <children>
+      <AnchorPane layoutY="1.423828125" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0">
+         <children>
+            <AnchorPane prefHeight="27.0" prefWidth="385.0">
+               <children>
+                  <Text layoutX="149.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert Data">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <ScrollPane hbarPolicy="NEVER" layoutY="25.0" prefHeight="275.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+               <content>
+                  <FlowPane prefHeight="300.0" prefWidth="398.0">
+                     <children>
+                        <AnchorPane prefHeight="70.0" prefWidth="398.0">
+                           <children>
+                              <TextField id="idField" fx:id="idField" layoutX="178.0" layoutY="32.0" />
+                              <Label layoutX="51.0" layoutY="33.0" prefHeight="24.0" prefWidth="121.0" text="ID">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="70.0" prefWidth="398.0">
+                           <children>
+                              <TextField id="nameField" fx:id="nameField" layoutX="178.0" layoutY="32.0" />
+                              <Label layoutX="51.0" layoutY="33.0" prefHeight="24.0" prefWidth="121.0" text="nama product">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="80.0" prefHeight="70.0" prefWidth="398.0">
+                           <children>
+                              <TextField id="priceField" fx:id="priceField" layoutX="178.0" layoutY="32.0" />
+                              <Label layoutX="51.0" layoutY="33.0" prefHeight="24.0" prefWidth="121.0" text="Price">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="150.0" prefHeight="70.0" prefWidth="398.0">
+                           <children>
+                              <TextField id="stockField" fx:id="stockField" layoutX="178.0" layoutY="32.0" />
+                              <Label layoutX="51.0" layoutY="33.0" prefHeight="24.0" prefWidth="121.0" text="Stock*">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+      <Button fx:id="finishButton" layoutX="337.0" layoutY="307.0" mnemonicParsing="false" text="Finish" />
+      <Button fx:id="cancelButton" layoutX="271.0" layoutY="308.0" mnemonicParsing="false" text="Cancel" />
+   </children>
+</AnchorPane>

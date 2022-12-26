@@ -13,6 +13,21 @@ public class FormatSaver implements Serializable {
     private Double stock;
     private Boolean delete;
     private Set<String> category;
+    private String description;
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
      * 
