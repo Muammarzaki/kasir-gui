@@ -27,16 +27,25 @@ public class PayDialogController implements Initializable {
             @Override
             public void handle(Event arg0) {
                 String regex = "[rp.,RP]";
-                // int payFieldFormat = Integer.parseInt(payField.getText().replaceAll(regex,
-                // "").trim());
-                // payField.setText(String.format("Rp. %,d", payFieldFormat));
-                Integer sisa = Integer.parseInt(payField.getText().replaceAll(regex, "").trim())
-                        - Integer.parseInt(total.getText().replaceAll(regex, "").trim());
-                if (sisa > -1) {
-                    returnField.setText(String.format("Rp. %,d", sisa));
-                }
-            }
+                try {
+                    if (!payField.getText().isEmpty()) {
+                        int payfieldInt = Integer.parseInt(payField.getText().replaceAll(regex, "").trim());
+                        int totalFieldInt = Integer.parseInt(total.getText().replaceAll(regex, "").trim());
+                        Integer sisa = payfieldInt
+                                - totalFieldInt;
+                        if (payfieldInt >= totalFieldInt) {
 
+                            returnField.setText(String.format("Rp. %,d", sisa));
+
+                        } else {
+                            returnField.clear();
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+            }
         });
     }
 

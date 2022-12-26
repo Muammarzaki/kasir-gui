@@ -19,6 +19,8 @@ import com.kasirgui.services.BuyServiceImpl;
 import com.kasirgui.services.BuyServices;
 
 import javafx.collections.FXCollections;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +35,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 public class BuyingController implements Initializable {
     private BuyServices buyService;
@@ -91,6 +94,8 @@ public class BuyingController implements Initializable {
 
     @FXML
     private TableColumn<BuyFormat, Integer> totalPrice;
+    @FXML
+    private Pane dataProductPane;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -98,16 +103,26 @@ public class BuyingController implements Initializable {
                 new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d),
                 new FormatSaver("buaya", 7000d, 0d));
         try {
-
             buyService = new BuyServiceImpl(data);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         data.forEach(
-                (x) -> listSimpleProduct
+                x -> listSimpleProduct
                         .add(new SimpleProductFormat(x.getProductName(), x.getPrice().intValue(),
                                 x.getStock().intValue())));
+        dataProductPane.setOnMouseClicked(new EventHandler<Event>() {
 
+            @Override
+            public void handle(Event arg0) {
+                try {
+                    App.setRoot("data-product");
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+
+        });
         product.setCellValueFactory(new PropertyValueFactory<>("Name"));
         count.setCellValueFactory(new PropertyValueFactory<>("Jumlah"));
         priceOfOne.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
@@ -117,7 +132,6 @@ public class BuyingController implements Initializable {
         listName.setCellValueFactory(new PropertyValueFactory<>("Name"));
         listStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         listPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-
         soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
         soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
         listTableSold.setItems(
@@ -205,8 +219,7 @@ public class BuyingController implements Initializable {
         try {
             popup();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         System.out.println("submit");
     }
@@ -225,12 +238,17 @@ public class BuyingController implements Initializable {
         Dialog<ButtonType> dialog = new Dialog<>();
 
         dialog.setDialogPane(popupPane);
+
         Optional<ButtonType> selected = dialog.showAndWait();
-        // ! fucking dev fixing this motherfucker
+
+        // ! fucking dev fixing this motherfucker make a aundit
         if (selected.get() == ButtonType.FINISH) {
-            System.out.print("oke");
+            App.setRoot("buy");
+            System.out.println("oke");
+        } else if (selected.get() == ButtonType.CANCEL) {
+            System.out.println("oke di cancle");
         } else {
-            // todo fixing this please
+            // nothing to do
         }
 
     }

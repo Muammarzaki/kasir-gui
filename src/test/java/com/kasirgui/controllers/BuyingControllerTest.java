@@ -20,6 +20,7 @@ public class BuyingControllerTest {
         ra.add("iay");
         ra.add("ikan");
         ra.add("ikan");
+        ra.remove(1);
         assertArrayEquals(ra.toArray(), bean.toArray());
     }
 

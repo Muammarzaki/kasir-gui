@@ -44,8 +44,7 @@ public class BuyServiceImplTest {
             Double total = buy.getTotal(selectedProduct);
             assertNotNull(total);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println(e.getCause() + " " + e.getMessage());
         }
     }
 
