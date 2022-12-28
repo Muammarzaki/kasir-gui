@@ -6,20 +6,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.FormatSaver;
+import com.kasirgui.model.SimpleProductSaverFormat;
 
 public class BuyServiceImpl implements BuyServices {
-    public List<FormatSaver> listProduct;
+    public List<SimpleProductSaverFormat> listProduct;
 
     /**
-     * @param listProduct
+     * @param list
      */
-    public BuyServiceImpl(List<FormatSaver> listProduct) {
-        this.listProduct = listProduct;
+    public BuyServiceImpl(List<SimpleProductSaverFormat> list) {
+        this.listProduct = list;
     }
 
     @Override
-    public void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount) throws Exception{ 
+    public void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount) throws Exception {
 
         Optional<BuyFormat> findFirst = dataProduct.stream().filter(x -> x.getName().equals(productName))
                 .findFirst();
@@ -28,8 +28,8 @@ public class BuyServiceImpl implements BuyServices {
             currentProduct.setJumlah(currentProduct.getJumlah() + amount)
                     .setTotalPrice(currentProduct.getJumlah() * currentProduct.getUnitPrice());
         } else {
-            Optional<FormatSaver> productEntity = listProduct.stream()
-                    .filter(x -> x.getProductName().equals(productName)).findFirst();
+            Optional<SimpleProductSaverFormat> productEntity = listProduct.stream()
+                    .filter(x -> x.getName().equals(productName)).findFirst();
             if (productEntity.isPresent()) {
                 Double price = productEntity.get().getPrice();
                 dataProduct.add(new BuyFormat().setName(productName).setJumlah(amount).setUnitPrice(price)
@@ -44,6 +44,10 @@ public class BuyServiceImpl implements BuyServices {
                 .collect(Collectors.groupingBy(BuyFormat::getName, Collectors.summingDouble(BuyFormat::getTotalPrice)));
         Double totalPrice = total.values().stream().reduce(0d, Double::sum);
         return totalPrice;
+    }
+
+    private void decrement() {
+        // ! wajibun ko selesain mar
     }
 
 }

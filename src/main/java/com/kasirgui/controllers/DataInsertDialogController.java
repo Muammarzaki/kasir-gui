@@ -108,8 +108,8 @@ public class DataInsertDialogController implements Initializable {
     public void CreateProduct() {
         if (idField != null && nameField != null && priceField != null && stockField != null) {
             this.product = new SimpleProductSaverFormat(idField.getText(),
-                    nameField.getText(), Double.parseDouble(priceField.getText()),
-                    Double.parseDouble(stockField.getText()));
+                    nameField.getText(), Double.parseDouble(priceField.getText().replaceAll("[,.]", "")),
+                    Double.parseDouble(stockField.getText().replaceAll("[,.]", "")));
             if (index != null) {
                 DataProductList.getData().set(index, product);
             } else {
@@ -119,6 +119,7 @@ public class DataInsertDialogController implements Initializable {
         }
 
     }
+
     void close() {
         Stage window = (Stage) idField.getScene().getWindow();
         window.close();

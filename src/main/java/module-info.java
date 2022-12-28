@@ -20,4 +20,5 @@ module com.kasirgui {
      * 
      */
     exports com.kasirgui;
+    exports com.kasirgui.model;
 }

@@ -26,4 +26,11 @@ public class DataProductList {
         return data;
     }
 
+    /**
+     * @param data the data to set
+     */
+    public static void setData(List<SimpleProductSaverFormat> data) {
+        DataProductList.data = data;
+    }
+
 }

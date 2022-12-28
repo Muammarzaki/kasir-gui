@@ -11,12 +11,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.FormatSaver;
+import com.kasirgui.model.SimpleProductSaverFormat;
 
 public class BuyServiceImplTest {
 
-    List<FormatSaver> data = List.of(new FormatSaver("ikan", 3000d, 3d),
-            new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d));
+    List<SimpleProductSaverFormat> data = List.of(new SimpleProductSaverFormat("i", "ikan", 3000d, 3d),
+            new SimpleProductSaverFormat("a", "ayam", 3200d, 3d), new SimpleProductSaverFormat("b", "babi", 2000d, 3d));
     public BuyServiceImpl buy = new BuyServiceImpl(data);
     public List<BuyFormat> selectedProduct = new ArrayList<>();;
 

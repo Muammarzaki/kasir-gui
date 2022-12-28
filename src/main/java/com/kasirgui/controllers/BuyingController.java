@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.kasirgui.App;
+import com.kasirgui.helpers.DataProductList;
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.FormatSaver;
 import com.kasirgui.model.SimpleProductFormat;
+import com.kasirgui.model.SimpleProductSaverFormat;
 import com.kasirgui.services.BuyServiceImpl;
 import com.kasirgui.services.BuyServices;
 
@@ -99,17 +100,16 @@ public class BuyingController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        List<FormatSaver> data = List.of(new FormatSaver("ikan", 3000d, 3d),
-                new FormatSaver("ayam", 3200d, 3d), new FormatSaver("babi", 2000d, 3d),
-                new FormatSaver("buaya", 7000d, 0d));
+        List<SimpleProductSaverFormat> data = DataProductList.getData();
         try {
+
             buyService = new BuyServiceImpl(data);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         data.forEach(
                 x -> listSimpleProduct
-                        .add(new SimpleProductFormat(x.getProductName(), x.getPrice().intValue(),
+                        .add(new SimpleProductFormat(x.getName(), x.getPrice().intValue(),
                                 x.getStock().intValue())));
         dataProductPane.setOnMouseClicked(new EventHandler<Event>() {
 

@@ -22,7 +22,20 @@ public class JsonHandlerImpl implements JsonHandler<SimpleProductSaverFormat> {
     private ObjectMapper mapper = new ObjectMapper();
     private Path fileSave = Paths.get(config.getProperty("root")).resolve(config.getProperty("fileSave"));
 
-    public final void init() throws Exception {
+    public static void main(String[] args) throws IOException {
+        List<SimpleProductSaverFormat> data = List.of(new SimpleProductSaverFormat("i", "ikan", 7d, 6d));
+        JsonHandlerImpl json = new JsonHandlerImpl();
+        json.write(data);
+    }
+
+    /**
+     * @return the fileSave
+     */
+    public Path getFileSave() {
+        return fileSave;
+    }
+
+    public final void init() throws IOException {
         if (!Files.exists(fileSave)) {
             System.out.println(fileSave.toAbsolutePath());
             Files.createDirectory(fileSave.getParent());
@@ -36,13 +49,11 @@ public class JsonHandlerImpl implements JsonHandler<SimpleProductSaverFormat> {
         // init();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         writer.writeValue(fileSave.toFile(), data);
-
-        // writer.writeValue(fileSave.toFile(), data);
     }
 
     @Override
     public List<SimpleProductSaverFormat> read() throws Exception {
-        // init();
+        init();
         List<SimpleProductSaverFormat> data = new ArrayList<>();
         data.addAll(mapper.readValue(fileSave.toFile(), new TypeReference<List<SimpleProductSaverFormat>>() {
         }));
