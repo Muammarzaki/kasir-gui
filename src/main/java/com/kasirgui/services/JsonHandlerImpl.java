@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.kasirgui.helpers.PropertiesConfig;
 import com.kasirgui.model.SimpleProductSaverFormat;
 
-public class JsonHandlerImpl<T> implements JsonHandler<T> {
+public class JsonHandlerImpl implements JsonHandler<SimpleProductSaverFormat> {
 
     Properties config = PropertiesConfig.getConfig("config");
     private ObjectMapper mapper = new ObjectMapper();

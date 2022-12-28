@@ -2,8 +2,6 @@ package com.kasirgui.services;
 
 import java.util.List;
 
-import com.kasirgui.model.SimpleProductSaverFormat;
-
 /**
  * JsonHandler
  */
@@ -14,12 +12,12 @@ public interface JsonHandler<T> {
      * 
      * @param data
      */
-    void write(List<SimpleProductSaverFormat> data) throws Exception;
+    void write(List<T> data) throws Exception;
 
     /**
      * read json file to pojo
      * 
      * @return
      */
-    List<SimpleProductSaverFormat> read() throws Exception;
+    List<T> read() throws Exception;
 }

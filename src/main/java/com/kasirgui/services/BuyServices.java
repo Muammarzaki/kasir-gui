@@ -2,9 +2,7 @@ package com.kasirgui.services;
 
 import java.util.List;
 
-import com.kasirgui.helpers.ProductSaver;
 import com.kasirgui.model.BuyFormat;
-import com.kasirgui.model.SimpleProductSaverFormat;
 
 /**
  * BuyServices
@@ -25,14 +23,4 @@ public interface BuyServices {
      * @throws Exception
      */
     Double getTotal(List<BuyFormat> dataProduct) throws Exception;
-
-    /**
-     * get data dari table / json file dgn mengakses json data handler
-     * 
-     * @return JsonHandler<formatSaver>
-     * @throws Exception
-     */
-    static List<SimpleProductSaverFormat> getData() throws Exception {
-        return ProductSaver.getInstance().read();
-    }
 }
