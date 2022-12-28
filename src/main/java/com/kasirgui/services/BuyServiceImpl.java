@@ -19,8 +19,8 @@ public class BuyServiceImpl implements BuyServices {
     }
 
     @Override
-    public void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount)
-            throws Exception {
+    public void countAndCounter(List<BuyFormat> dataProduct, String productName, Integer amount) throws Exception{ 
+
         Optional<BuyFormat> findFirst = dataProduct.stream().filter(x -> x.getName().equals(productName))
                 .findFirst();
         if (findFirst.isPresent()) {

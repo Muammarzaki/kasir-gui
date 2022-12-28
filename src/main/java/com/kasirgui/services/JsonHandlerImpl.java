@@ -13,14 +13,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.kasirgui.helpers.ObjectMapperSingleton;
 import com.kasirgui.helpers.PropertiesConfig;
 import com.kasirgui.model.SimpleProductSaverFormat;
 
 public class JsonHandlerImpl<T> implements JsonHandler<T> {
 
     Properties config = PropertiesConfig.getConfig("config");
-    private ObjectMapper mapper = ObjectMapperSingleton.getInstace();
+    private ObjectMapper mapper = new ObjectMapper();
     private Path fileSave = Paths.get(config.getProperty("root")).resolve(config.getProperty("fileSave"));
 
     public final void init() throws Exception {

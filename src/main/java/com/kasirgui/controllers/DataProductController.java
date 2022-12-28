@@ -33,6 +33,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DataProductController {
+    /**
+     *
+     */
+    private static final String MESSAGE = "Message";
+
     private List<SimpleProductSaverFormat> productSavers = DataProductList.getData();
 
     @FXML
@@ -83,7 +88,6 @@ public class DataProductController {
         col2.setText("Price Product");
         col3.setCellValueFactory(new PropertyValueFactory<>("stock"));
         col3.setText("Stock Product");
-
         tableDataProduct.setItems(FXCollections.observableList(productSavers));
 
         buydiarect.setOnMouseReleased(new EventHandler<Event>() {
@@ -130,6 +134,10 @@ public class DataProductController {
                         modal.setResizable(true);
                         modal.showAndWait();
                         tableDataProduct.refresh();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle(MESSAGE);
+                        alert.setHeaderText("must selection a row in table");
                     }
 
                 } catch (IOException e1) {
@@ -145,12 +153,18 @@ public class DataProductController {
                 Integer index = tableDataProduct.getSelectionModel().getSelectedIndex();
                 if (index > -1) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Message");
-                    alert.setHeaderText("Are you sure you want to clear all nodes?");
+                    alert.setTitle(MESSAGE);
+                    alert.setHeaderText("Are you sure you want to delete this row?");
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.get().equals(ButtonType.OK)) {
                         productSavers.remove((int) index);
                     }
+                } else {
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(MESSAGE);
+                    alert.setHeaderText("must selection a row at table");
+                    alert.show();
                 }
                 tableDataProduct.refresh();
             }

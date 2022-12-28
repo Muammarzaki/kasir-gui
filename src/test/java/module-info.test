@@ -1,0 +1,9 @@
+open module com.kasirgui {
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires org.junit.jupiter.api;
+    requires com.kasirgui;
+    requires com.kasirgui.controllers;
+
+    exports com.kasirgui;
+}
