@@ -9,7 +9,7 @@ import com.kasirgui.model.BuyFormat;
 import com.kasirgui.model.SimpleProductSaverFormat;
 
 public class BuyServiceImpl implements BuyServices {
-    public List<SimpleProductSaverFormat> listProduct;
+    private List<SimpleProductSaverFormat> listProduct;
 
     /**
      * @param list
@@ -23,18 +23,26 @@ public class BuyServiceImpl implements BuyServices {
 
         Optional<BuyFormat> findFirst = dataProduct.stream().filter(x -> x.getName().equals(productName))
                 .findFirst();
-        if (findFirst.isPresent()) {
-            BuyFormat currentProduct = findFirst.get();
-            currentProduct.setJumlah(currentProduct.getJumlah() + amount)
-                    .setTotalPrice(currentProduct.getJumlah() * currentProduct.getUnitPrice());
-        } else {
-            Optional<SimpleProductSaverFormat> productEntity = listProduct.stream()
-                    .filter(x -> x.getName().equals(productName)).findFirst();
-            if (productEntity.isPresent()) {
-                Double price = productEntity.get().getPrice();
-                dataProduct.add(new BuyFormat().setName(productName).setJumlah(amount).setUnitPrice(price)
-                        .setTotalPrice(price * amount));
+        Optional<SimpleProductSaverFormat> productEntity = listProduct.stream()
+                .filter(x -> x.getName().equals(productName)).findFirst();
+
+        SimpleProductSaverFormat product = productEntity.get();
+        if (product.getStock() > 0) {
+            if (findFirst.isPresent()) {
+                BuyFormat currentProduct = findFirst.get();
+                currentProduct.setJumlah(currentProduct.getJumlah() + amount)
+                        .setTotalPrice(currentProduct.getJumlah() * currentProduct.getUnitPrice());
+            } else {
+                if (productEntity.isPresent()) {
+                    Double price = product.getPrice();
+                    dataProduct.add(new BuyFormat().setName(productName).setJumlah(amount).setUnitPrice(price)
+                            .setTotalPrice(price * amount));
+                }
             }
+
+            product.setStock(product.getStock() - amount);
+        } else {
+            throw new Exception("Product sold need Restock");
         }
     }
 
@@ -43,10 +51,6 @@ public class BuyServiceImpl implements BuyServices {
         Map<String, Double> total = dataProduct.stream()
                 .collect(Collectors.groupingBy(BuyFormat::getName, Collectors.summingDouble(BuyFormat::getTotalPrice)));
         return total.values().stream().reduce(0d, Double::sum);
-    }
-
-    private void decrement() {
-        // ! wajibun ko selesain mar
     }
 
 }

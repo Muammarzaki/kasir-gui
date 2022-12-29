@@ -61,7 +61,7 @@
                            </font>
                         </Text>
                      </children></Pane>
-                  <Pane layoutX="93.0" layoutY="13.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: orange;">
+                  <Pane fx:id="settingPane" layoutX="93.0" layoutY="13.0" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: orange;">
                      <children>
                         <FontAwesomeIconView glyphName="COG" layoutX="18.0" layoutY="42.0" size="40" />
                         <Text layoutX="16.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Setting">
@@ -108,7 +108,7 @@
                         </TableView>
                      </content>
                   </Tab>
-                  <Tab text="list barang habis">
+                  <Tab fx:id="barangHabisTab" text="list barang habis">
                      <content>
                         <TableView fx:id="listTableSold" prefHeight="200.0" prefWidth="200.0">
                            <columns>

@@ -131,13 +131,14 @@ public class DataProductController {
                         }
                         // fxml.setController(dataInsertControl);
                         modal.initModality(Modality.APPLICATION_MODAL);
-                        modal.setResizable(true);
+                        modal.setResizable(false);
                         modal.showAndWait();
                         tableDataProduct.refresh();
                     } else {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle(MESSAGE);
                         alert.setHeaderText("must selection a row in table");
+                        alert.show();
                     }
 
                 } catch (IOException e1) {
@@ -184,6 +185,7 @@ public class DataProductController {
                     modal.setTitle("Insert Data");
                     // DataInsertDialogController dataInsertControl = fxml.getController();
                     modal.initModality(Modality.APPLICATION_MODAL);
+                    modal.setResizable(false);
                     modal.showAndWait();
 
                     tableDataProduct.refresh();

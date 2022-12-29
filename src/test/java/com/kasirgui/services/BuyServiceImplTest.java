@@ -15,13 +15,13 @@ import com.kasirgui.model.SimpleProductSaverFormat;
 
 public class BuyServiceImplTest {
 
-    List<SimpleProductSaverFormat> data = List.of(new SimpleProductSaverFormat("i", "ikan", 3000d, 3d),
-            new SimpleProductSaverFormat("a", "ayam", 3200d, 3d), new SimpleProductSaverFormat("b", "babi", 2000d, 3d));
-    public BuyServiceImpl buy = new BuyServiceImpl(data);
-    public List<BuyFormat> selectedProduct = new ArrayList<>();;
-
     @Test
     public void testCountAndCounter() throws Exception {
+        List<SimpleProductSaverFormat> data = List.of(new SimpleProductSaverFormat("i", "ikan", 3000d, 3d),
+                new SimpleProductSaverFormat("a", "ayam", 3200d, 10d),
+                new SimpleProductSaverFormat("b", "babi", 2000d, 10d));
+        BuyServiceImpl buy = new BuyServiceImpl(data);
+        List<BuyFormat> selectedProduct = new ArrayList<>();
         selectedProduct
                 .addAll(Arrays.asList(new BuyFormat("ikan", 2, 3000d, 6000d), new BuyFormat("ayam", 2, 3200d, 6400d)));
         buy.countAndCounter(selectedProduct, "babi", 3);
@@ -34,6 +34,12 @@ public class BuyServiceImplTest {
 
     @Test
     void testGetTotal() {
+        List<SimpleProductSaverFormat> data = List.of(new SimpleProductSaverFormat("i", "ikan", 3000d, 3d),
+                new SimpleProductSaverFormat("a", "ayam", 3200d, 3d),
+                new SimpleProductSaverFormat("b", "babi", 2000d, 3d));
+        BuyServiceImpl buy = new BuyServiceImpl(data);
+        List<BuyFormat> selectedProduct = new ArrayList<>();
+        ;
         assertDoesNotThrow(() -> {
             Double total = buy.getTotal(selectedProduct);
             assertNotNull(total);

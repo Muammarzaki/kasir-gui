@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 // import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
@@ -29,6 +32,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -42,8 +46,6 @@ public class BuyingController implements Initializable {
     private BuyServices buyService;
 
     private List<BuyFormat> productBuying = new ArrayList<>();
-
-    private List<SimpleProductFormat> listSimpleProduct = new ArrayList<>();
 
     @FXML
     private TableView<BuyFormat> buyTable;
@@ -64,10 +66,10 @@ public class BuyingController implements Initializable {
     private TableColumn<SimpleProductFormat, Integer> listStock;
 
     @FXML
-    private TableView<SimpleProductFormat> listTable;
+    private TableView<SimpleProductSaverFormat> listTable;
 
     @FXML
-    private TableView<SimpleProductFormat> listTableSold;
+    private TableView<SimpleProductSaverFormat> listTableSold;
 
     @FXML
     private TableColumn<BuyFormat, Integer> priceOfOne;
@@ -98,19 +100,23 @@ public class BuyingController implements Initializable {
     @FXML
     private Pane dataProductPane;
 
+    @FXML
+    private Tab barangHabisTab;
+
+    @FXML
+    private Pane settingPane;
+
+    ScheduledExecutorService schedule = Executors.newSingleThreadScheduledExecutor();
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        List<SimpleProductSaverFormat> data = DataProductList.getData();
+        List<SimpleProductSaverFormat> listSimpleProduct = DataProductList.getData();
         try {
 
-            buyService = new BuyServiceImpl(data);
+            buyService = new BuyServiceImpl(listSimpleProduct);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        data.forEach(
-                x -> listSimpleProduct
-                        .add(new SimpleProductFormat(x.getName(), x.getPrice().intValue(),
-                                x.getStock().intValue())));
         dataProductPane.setOnMouseClicked(new EventHandler<Event>() {
 
             @Override
@@ -134,10 +140,51 @@ public class BuyingController implements Initializable {
         listPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         soldProduct.setCellValueFactory(new PropertyValueFactory<>("Name"));
         soldstock.setCellValueFactory(new PropertyValueFactory<>("Stock"));
-        listTableSold.setItems(
-                FXCollections.observableList(
-                        listSimpleProduct.stream().filter(x -> x.getStock() == 0).collect(Collectors.toList())));
         listTable.setItems(FXCollections.observableList(listSimpleProduct));
+        schedule.scheduleWithFixedDelay(() -> listTableSold.setItems(
+                FXCollections.observableList(
+                        listSimpleProduct.stream().filter(x -> x.getStock() == 0).collect(Collectors.toList()))),
+                1, 10, TimeUnit.SECONDS);
+        settingPane.setOnMouseClicked(new EventHandler<Event>() {
+
+            @Override
+            public void handle(Event arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        }
+
+        );
+    }
+
+    public void popup() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("pay-dialog.fxml"));
+        DialogPane popupPane = fxmlLoader.load();
+        PayDialogController buycontrol = fxmlLoader.getController();
+
+        try {
+            buycontrol.total.setText(String.format("Rp. %,d", Math.round(buyService.getTotal(productBuying))));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+
+        dialog.setDialogPane(popupPane);
+
+        Optional<ButtonType> selected = dialog.showAndWait();
+
+        // todo make this rightly
+        // ! fucking dev fixing this motherfucker make a aundit
+
+        if (selected.get() == ButtonType.FINISH) {
+            App.setRoot("buy");
+            System.out.println("oke");
+        } else if (selected.get() == ButtonType.CANCEL) {
+            System.out.println("oke di cancle");
+        } else {
+            // nothing to do
+        }
 
     }
 
@@ -146,13 +193,11 @@ public class BuyingController implements Initializable {
         productBuying.clear();
         buyTable.refresh();
         totalBuy.clear();
-        System.out.println("cancle");
     }
 
     @FXML
     void hitungClick(MouseEvent event) {
         try {
-            System.out.println("hitung click");
             String[] text = countField.getText().trim().split(" ");
             if (text.length == 2) {
                 buyService.countAndCounter(productBuying, text[0], Integer.parseInt(text[1]));
@@ -161,6 +206,8 @@ public class BuyingController implements Initializable {
             }
             countField.clear();
             buyTable.refresh();
+            listTable.refresh();
+            listTableSold.refresh();
             totalSchedule();
         } catch (
 
@@ -178,7 +225,6 @@ public class BuyingController implements Initializable {
     void hitungEnter(KeyEvent event) {
         try {
             if (event.getCode() == KeyCode.ENTER) {
-                System.out.println("hitung enter");
                 String[] text = countField.getText().trim().split(" ");
                 if (text.length == 2) {
                     buyService.countAndCounter(productBuying, text[0], Integer.parseInt(text[1]));
@@ -187,6 +233,8 @@ public class BuyingController implements Initializable {
                 }
                 countField.clear();
                 buyTable.refresh();
+                listTable.refresh();
+                listTableSold.refresh();
                 totalSchedule();
             }
 
@@ -208,12 +256,6 @@ public class BuyingController implements Initializable {
         }
     }
 
-    private void totalSchedule() throws Exception {
-        Double total = buyService.getTotal(productBuying);
-        totalBuy.setText(String.format("Rp. %,d", Math.round(total)));
-
-    }
-
     @FXML
     void submitClick(MouseEvent event) {
         try {
@@ -221,36 +263,11 @@ public class BuyingController implements Initializable {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        System.out.println("submit");
     }
 
-    public void popup() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("pay-dialog.fxml"));
-        DialogPane popupPane = fxmlLoader.load();
-        PayDialogController buycontrol = fxmlLoader.getController();
-
-        try {
-            buycontrol.total.setText(String.format("Rp. %,d", Math.round(buyService.getTotal(productBuying))));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-
-        dialog.setDialogPane(popupPane);
-
-        Optional<ButtonType> selected = dialog.showAndWait();
-
-        // ! fucking dev fixing this motherfucker make a aundit
-        if (selected.get() == ButtonType.FINISH) {
-            App.setRoot("buy");
-            System.out.println("oke");
-        } else if (selected.get() == ButtonType.CANCEL) {
-            System.out.println("oke di cancle");
-        } else {
-            // nothing to do
-        }
-
+    private void totalSchedule() throws Exception {
+        Double total = buyService.getTotal(productBuying);
+        totalBuy.setText(String.format("Rp. %,d", Math.round(total)));
     }
 
 }

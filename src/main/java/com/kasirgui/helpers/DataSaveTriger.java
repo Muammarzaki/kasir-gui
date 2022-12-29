@@ -31,7 +31,6 @@ public class DataSaveTriger {
             List<SimpleProductSaverFormat> read = json.read();
             DataProductList.setData(read);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

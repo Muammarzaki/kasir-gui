@@ -19,6 +19,7 @@ public class App extends Application {
     public void stop() throws Exception {
         DataSaveTriger.save();
         super.stop();
+        System.exit(0);
     }
 
     private static Scene scene;
