@@ -42,8 +42,7 @@ public class BuyServiceImpl implements BuyServices {
     public Double getTotal(List<BuyFormat> dataProduct) throws Exception {
         Map<String, Double> total = dataProduct.stream()
                 .collect(Collectors.groupingBy(BuyFormat::getName, Collectors.summingDouble(BuyFormat::getTotalPrice)));
-        Double totalPrice = total.values().stream().reduce(0d, Double::sum);
-        return totalPrice;
+        return total.values().stream().reduce(0d, Double::sum);
     }
 
     private void decrement() {
