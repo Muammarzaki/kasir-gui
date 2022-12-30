@@ -149,8 +149,11 @@ public class BuyingController implements Initializable {
 
             @Override
             public void handle(Event arg0) {
-                // TODO Auto-generated method stub
-
+                try {
+                    App.setRoot("setting");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -174,8 +177,8 @@ public class BuyingController implements Initializable {
 
         Optional<ButtonType> selected = dialog.showAndWait();
 
-        // todo make this rightly
-        // ! fucking dev fixing this motherfucker make a aundit
+        // TODO make this rightly
+        // TODO fucking dev fixing this motherfucker make a aundit
 
         if (selected.get() == ButtonType.FINISH) {
             App.setRoot("buy");
