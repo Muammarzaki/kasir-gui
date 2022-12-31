@@ -78,7 +78,7 @@
                             <transformers>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.kasirgui.</mainClass>
+                                    <mainClass>com.kasirgui.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <!-- <archive>

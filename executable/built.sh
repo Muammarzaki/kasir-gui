@@ -6,7 +6,7 @@ jpackage --name kasir-Marsal \
 --vendor marsal \
 --icon squirrel.ico \
 --input input \
---add-modules java.base \
+--runtime-image image \
 --main-jar kasir-gui.jar \
 --win-dir-chooser \
 --win-shortcut 

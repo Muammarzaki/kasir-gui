@@ -6,26 +6,18 @@ membuat kasir sederhana berbasis GUI dengan teknologi JavaFx. ini dibuat sebagai
 
 ## Fiture
 
----
-
 - [x] data save mengunakan file json
 - [x] insert, update, delete kepada file JSON
 - [ ] Audit transaksi
 
-<br \>
+## Download
+
+untuk mendapatkan lates versi [download](https://github.com/Muammarzaki/kasir-gui/releases) kasir marsal
+
+    semoga bermanfaat
 
 ## Beberapa gambar untuk melengkapi doc  
 
----
-
-## Terimakasih Author kepada visitor
-
----
-
-```java
-public class Author{
-    public static void main(String[] args){
-        System.out.println("terimakasih banyak telah meluangkan waktu untuk mengunjungi repository ini")
-    }
-}
-```
+![login](documentasion/login.jpg)
+![buy](documentasion/buyPane.jpg)
+![data](documentasion/data.jpg)
