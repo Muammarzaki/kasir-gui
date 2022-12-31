@@ -1,3 +1,7 @@
 /target
 /.vscode
 /kasir-config
+/executable/*
+!/executable/*.ico
+!/executable/*.sh
+dependency-reduced-pom.xml

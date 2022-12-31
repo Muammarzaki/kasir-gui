@@ -1,0 +1,12 @@
+jpackage --name kasir-Marsal \
+--app-version 1.0.0 \
+--verbose \
+--type exe \
+--copyright marsal-2022 \
+--vendor marsal \
+--icon squirrel.ico \
+--input input \
+--add-modules java.base \
+--main-jar kasir-gui.jar \
+--win-dir-chooser \
+--win-shortcut 
