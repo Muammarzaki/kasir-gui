@@ -37,16 +37,16 @@
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="99.0" prefWidth="465.0">
                <children>
-                  <TextField fx:id="auditField" layoutX="47.0" layoutY="53.0" />
+                  <TextField fx:id="auditField" disable="true" layoutX="47.0" layoutY="53.0" />
                   <Label layoutX="47.0" layoutY="35.0" text="Audit File" />
-                  <Button fx:id="createAuditButton" layoutX="215.0" layoutY="53.0" mnemonicParsing="false" text="Create" />
+                  <Button fx:id="createAuditButton" disable="true" layoutX="215.0" layoutY="53.0" mnemonicParsing="false" text="Create" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="109.0" prefHeight="92.0" prefWidth="465.0">
                <children>
-                  <TextField fx:id="dataField" layoutX="51.0" layoutY="32.0" />
+                  <TextField fx:id="dataField" disable="true" layoutX="51.0" layoutY="32.0" />
                   <Label layoutX="51.0" layoutY="14.0" text="Data File" />
-                  <Button fx:id="createDataButton" layoutX="216.0" layoutY="32.0" mnemonicParsing="false" text="Create" />
+                  <Button fx:id="createDataButton" disable="true" layoutX="216.0" layoutY="32.0" mnemonicParsing="false" text="Create" />
                </children>
             </AnchorPane>
          </children>

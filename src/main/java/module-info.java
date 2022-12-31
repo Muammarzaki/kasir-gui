@@ -14,7 +14,6 @@ module com.kasirgui {
     opens com.kasirgui.controllers to javafx.fxml;
     opens com.kasirgui.model to javafx.base;
 
-    
     /**
      * exports com.kasirgui.controllers;
      * 
